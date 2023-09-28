@@ -1,3 +1,6 @@
+#ifndef LIST_H
+#define LIST_H
+
 template <typename T>
 
 class list{
@@ -11,3 +14,5 @@ class list{
 		virtual bool empty() = 0;
 		virtual int size() = 0;
 };
+
+#endif
