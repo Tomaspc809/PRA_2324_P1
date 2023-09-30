@@ -23,6 +23,7 @@ class ListArray:public List<T>{
 		ListArray(){
 			arr = new T[MINSIZE];
 			n = 0;
+			max = MINSIZE;
 		}
 		~ListArray(){
 			delete[] arr;
