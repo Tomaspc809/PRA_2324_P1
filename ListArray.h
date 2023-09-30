@@ -3,7 +3,7 @@
 
 template <typename T>
 
-class listArray:public list<T>{
+class ListArray:public List<T>{
 	private:
 		T* arr;
 		int max;
@@ -16,27 +16,27 @@ class listArray:public list<T>{
 				a[i] = arr[i];
 			}
 			delete[] arr;
-			arr->a;
+			arr = a;
 			max = newSize;
 		}
 	public:
-		listArray(){
+		ListArray(){
 			arr = new T[MINSIZE];
 			n = 0;
 		}
-		~listArray(){
+		~ListArray(){
 			delete[] arr;
 		}
 
 		T operator[](int pos){
 			return get(pos);
 		}
-		friend std::ostream& operator<<(std::ostream &out, const listArray<T> &list){
+		friend std::ostream& operator<<(std::ostream &out, const ListArray<T> &list){
 			out<<"La lista contiene: "<<std::endl;
 			for (int i = 0; i < list.n; i++){
 				out<<list.arr[i]<<std::endl;
 			}
-			out<<std::endl<<"Vacía: "<<empty()<<std::endl<<"Nº de elementos: "<<list.size();
+			out<<std::endl;
 			return out;
 		}
 
