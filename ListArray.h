@@ -11,7 +11,7 @@ class ListArray:public List<T>{
 		static const int MINSIZE = 2;
 		
 		void resize(int newSize){
-			T a[newSize];
+			T* a = new T[newSize];
 			for (int i = 0; i < n; i++){
 				a[i] = arr[i];
 			}
@@ -93,7 +93,7 @@ class ListArray:public List<T>{
 			return arr[pos];
 		}
 		int search(T e) override{
-			bool found = false;
+			/*bool found = false;
 			int i = 0;
 			
 			do{
@@ -103,6 +103,12 @@ class ListArray:public List<T>{
 
 			if (found){
 				return i - 1;
+			}
+			return -1;*/
+			for (int i = 0; i < n; i++){
+				if (arr[i] == e){
+					return i;
+				}
 			}
 			return -1;
 		}
