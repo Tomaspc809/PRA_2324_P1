@@ -4,23 +4,25 @@
 
 template <typename T>
 class ListLinked : public List<T>{
+
 	private:
 		Node<T>* first;
 		int n;
 
 	public:
 		ListLinked(){
-			first = nullptr;
-			n = 0;
+			this->first = nullptr;
+			this->n = 0;
 		}
 		~ListLinked(){
-			Node<T>* aux = first.next;
+			Node<T>* aux = first;
 
-			for (int i = 0; i < n; i++){
-				delete first;
-				first = aux;
-				aux->next;
+			for (int i = 1; i < n; i++){
+				first = first->next;
+				delete aux;
+				aux = first;
 			}
+			delete first;
 		}
 
 		T operator[](int pos){
@@ -29,10 +31,11 @@ class ListLinked : public List<T>{
 		friend std::ostream& operator<<(std::ostream &out, const ListLinked<T> &list){
 			out<<"La lista contiene: "<<std::endl;
 			Node<T>* aux = list.first;
-			
-			for (int i = 0; i < list.size(); i++){
-				out<<aux.data<<std::endl;
-				aux->next;
+			T valor;
+			for (int i = 0; i < list.n; i++){
+				valor = aux->data;
+				out<<valor<<std::endl;
+				aux = aux->next;
 			}
 			return out;
 		}
@@ -41,36 +44,36 @@ class ListLinked : public List<T>{
 			if (pos < 0 || pos > n){
 				throw std::out_of_range("Posición inválida.");
 			}
-			Node<T> ins = new Node(e);
-			Node<T>* aux = first;
-			Node<T>* prevaux = nullptr;
+			Node<T>* ins;
+			Node<T>* aux;
 
-			for (int i = 0; i <= pos; i++){
-				prevaux = aux;
-				aux->next;
-			}
-			ins.next = aux;
-
-			if (pos == 0){
-				first = ins;
+			if(pos == 0){
+				first = new Node<T>(e, first);
 			}else{
-				prevaux.next = ins;
+				aux = first;
+				
+				for(int i = 1; i < pos; i++){
+					aux = aux->next;
+				}
+
+				ins = new Node<T>(e, aux->next);
+				aux->next = ins;
 			}
 			n++;
 		}
 		void append(T e) override{
-			Node<T> ins = new Node(e);
+			Node<T>* ins = new Node(e);
 			Node<T>* aux = first;
 
-			for (int i = 0; i < n; i++){
-				aux->next;
+			for (int i = 1; i < n; i++){
+				aux = aux->next;
 			}
-			aux.next = ins;
+			aux->next = ins;
 			n++;
 		}
 		void prepend(T e) override{
-			Node<T> ins = new Node(e);
-			ins.next = first;
+			Node<T>* ins = new Node(e);
+			ins->next = first;
 			first = ins;
 			n++;
 		}
@@ -79,45 +82,50 @@ class ListLinked : public List<T>{
 				throw std::out_of_range("Posición inválida.");
 			}
 			T ret;
-			Node<T>* aux = first.next;
-			Node<T>* prevaux = first;
+			Node<T>* prev = first;
 
 			if (pos == 0){
-				ret = prevaux.data;
-				delete prevaux;
-				first = aux;
+				first = first->next;
+				ret = prev->data;
+				delete prev;
 				n--;
+
 				return ret;
 			}
-			for (int i = 0; i <= pos; i++){
-				prevaux = aux;
-				aux->next;
+
+			Node<T>* aux = first->next;
+
+			for (int i = 1; i < pos; i++){
+				prev = aux;
+				aux = aux->next;
 			}
-			ret = aux.data;
-			prevaux.next = aux.next;
+			ret = aux->data;
+			prev->next = aux->next;
 			delete aux;
 			n--;
+
 			return ret;
 		}
-		T get(int pos) override{
+		T get(int pos) const override{
 			if (pos < 0 || pos >= n){
 				throw std::out_of_range("Posición inválida.");
 			}
 			Node<T>* aux = first;
 
 			for(int i = 0; i < pos; i++){
-				aux->next;
+				aux = aux->next;
 			}
-			return aux.data;
+
+			return aux->data;
 		}
 		int search(T e) override{
 			Node<T>* aux = first;
 
 			for(int i = 0; i < n; i++){
-				if (e == aux.data){
+				if (e == aux->data){
 					return i;
 				}
-				aux->next;
+				aux = aux->next;
 			}
 			return -1;
 		}
